@@ -10,8 +10,9 @@ import ProductListPage from './pages/ProductListPage.vue';
 import CartPage from './pages/CartPage.vue';
 import CheckoutPage from './pages/CheckoutPage.vue';
 import OrderConfirmationPage from './pages/OrderConfirmationPage.vue';
-import SearchResultsPage from './pages/SearchResultsPage.vue';
 import ProductPage from './pages/ProductPage.vue';
+import LoginPage from './pages/LoginPage.vue';
+import SignupPage from './pages/SignUpPage.vue';
 
 // Create router
 const router = createRouter({
@@ -24,7 +25,8 @@ const router = createRouter({
     { path: '/cart', component: CartPage },
     { path: '/checkout', component: CheckoutPage },
     { path: '/order-confirmation', component: OrderConfirmationPage },
-    { path: '/search', component: SearchResultsPage },
+    { path: '/login', component: LoginPage },
+    { path: '/signup', component: SignupPage },
   ],
   scrollBehavior() {
     // Always scroll to top
