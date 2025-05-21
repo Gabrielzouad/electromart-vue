@@ -245,11 +245,10 @@
 
 <script setup>
   import { ref, computed, watch, onMounted, defineEmits } from 'vue';
-  import { useRoute,  } from 'vue-router';
+  import { useRoute } from 'vue-router';
   import { getProducts, getCategories, getBrands, getCategoryById, addToCart } from '../lib/api';
 
   const route = useRoute();
-
 
   // State
   const categories = ref([]);

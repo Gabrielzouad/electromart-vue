@@ -173,18 +173,6 @@
               </li>
             </ul>
           </div>
-
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
-            <ul class="space-y-2">
-              <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">Shipping Policy</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">Returns & Refunds</a></li>
-              <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-            </ul>
-          </div>
-
           <div>
             <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
             <div class="flex space-x-4 mb-4">

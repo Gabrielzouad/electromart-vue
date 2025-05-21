@@ -67,7 +67,7 @@ export async function fetchCart(userId) {
   return fetchFromAPI(`/cart/${userId}`);
 }
 
-export async function addToCartBackend(userId, productId, quantity = 1) {
+export async function addToCart(userId, productId, quantity = 1) {
   return fetchFromAPI(`/cart`, {
     method: 'POST',
     body: JSON.stringify({ userId, productId, quantity }),
