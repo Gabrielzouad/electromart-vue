@@ -245,11 +245,11 @@
 
 <script setup>
   import { ref, computed, watch, onMounted, defineEmits } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRoute,  } from 'vue-router';
   import { getProducts, getCategories, getBrands, getCategoryById, addToCart } from '../lib/api';
 
   const route = useRoute();
-  const router = useRouter();
+
 
   // State
   const categories = ref([]);
@@ -376,7 +376,7 @@
   };
 
   const handleAddToCart = (product) => {
-    const updatedCart = addToCart(product);
+    addToCart(product);
     emit('add-to-cart', product, 1);
 
     // Show a toast or notification

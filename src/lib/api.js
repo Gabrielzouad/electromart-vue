@@ -63,61 +63,25 @@ export async function getBrands() {
   return fetchFromAPI('/brands');
 }
 
-// Cart API (simulated with localStorage)
-export function getCart() {
-  try {
-    const cart = localStorage.getItem('electromart-cart');
-    return cart ? JSON.parse(cart) : [];
-  } catch (error) {
-    console.error('Error getting cart from localStorage:', error);
-    return [];
-  }
+export async function fetchCart(userId) {
+  return fetchFromAPI(`/cart/${userId}`);
 }
 
-export function saveCart(cart) {
-  localStorage.setItem('electromart-cart', JSON.stringify(cart));
+export async function addToCartBackend(userId, productId, quantity = 1) {
+  return fetchFromAPI(`/cart`, {
+    method: 'POST',
+    body: JSON.stringify({ userId, productId, quantity }),
+  });
 }
 
-export function addToCart(product, quantity = 1) {
-  const cart = getCart();
-  const existingItem = cart.find((item) => item.id === product.id);
-
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image_url || product.image,
-      quantity,
-    });
-  }
-
-  saveCart(cart);
-  return cart;
+export async function removeFromCartItem(cartItemId) {
+  return fetchFromAPI(`/cart/${cartItemId}`, {
+    method: 'DELETE',
+  });
 }
-
-export function updateCartItem(productId, quantity) {
-  const cart = getCart();
-  const item = cart.find((item) => item.id === productId);
-
-  if (item) {
-    item.quantity = quantity;
-    saveCart(cart);
-  }
-
-  return cart;
-}
-
-export function removeFromCart(productId) {
-  let cart = getCart();
-  cart = cart.filter((item) => item.id !== productId);
-  saveCart(cart);
-  return cart;
-}
-
-export function clearCart() {
-  localStorage.removeItem('electromart-cart');
-  return [];
+export async function updateCartItem(cartItemId, quantity) {
+  return fetchFromAPI(`/cart/${cartItemId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ quantity }),
+  });
 }
