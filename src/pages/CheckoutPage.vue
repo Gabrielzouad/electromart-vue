@@ -2,120 +2,211 @@
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">Checkout</h1>
 
-    <div v-if="loading" class="text-center py-8">
-      <div
-        class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500 mx-auto"
-      ></div>
-    </div>
-
-    <div v-else-if="safeCart && safeCart.length === 0" class="text-center py-8">
-      <p class="text-gray-500">Your cart is empty.</p>
-      <router-link
-        to="/products"
-        class="inline-block mt-4 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-md font-medium"
-      >
-        Browse Products
-      </router-link>
-    </div>
-
-    <div v-else>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Saved Addresses -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Select a saved address</h2>
+      <div v-if="savedAddresses.length === 0" class="text-gray-500 mb-4">
+        No saved addresses found.
+      </div>
+      <div v-else class="space-y-2 mb-6">
         <div
-          v-for="item in safeCart"
-          :key="item.CartItemID || item.ProductID"
-          class="bg-white rounded-lg shadow-md p-4 flex justify-between items-center"
+          v-for="address in savedAddresses"
+          :key="address.AddressID"
+          class="flex items-center space-x-4"
         >
-          <div class="flex items-center space-x-4">
-            <img :src="item.ImageURL" alt="Product" class="w-20 h-20 object-cover rounded" />
-            <div>
-              <h3 class="font-semibold text-lg text-gray-800">{{ item.Name }}</h3>
-              <p class="text-sm text-gray-600">Qty: {{ item.Quantity }}</p>
-              <p class="text-sm font-medium text-gray-800">
-                ${{ Number(item.Price).toFixed(2) }} each
-              </p>
-            </div>
-          </div>
+          <input
+            type="radio"
+            :value="address.AddressID"
+            v-model="selectedAddressId"
+            class="form-radio text-emerald-600"
+          />
+          <span>
+            {{ address.Street }}, {{ address.PostCode }} {{ address.City }}
+          </span>
         </div>
       </div>
+    </div>
 
-      <div class="mb-4">
-        <label class="block mb-2 text-sm font-medium text-gray-700">Shipping Address ID</label>
+    <!-- New Address Form -->
+    <div>
+      <h2 class="text-xl font-semibold mb-4">Or add a new address</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <input
-          type="number"
-          v-model="addressId"
-          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder="Enter Address ID"
+          v-model="newAddress.street"
+          type="text"
+          placeholder="Street"
+          class="border px-4 py-2 rounded"
+        />
+        <input
+          v-model="newAddress.postCode"
+          type="text"
+          placeholder="Postcode"
+          class="border px-4 py-2 rounded"
+          @blur="lookupCity"
+        />
+        <input
+          v-model="newAddress.city"
+          type="text"
+          placeholder="City (auto-filled)"
+          class="border px-4 py-2 rounded bg-gray-100"
+          readonly
         />
       </div>
+      <button
+        @click="saveNewAddress"
+        class="bg-blue-600 text-white px-6 py-2 rounded"
+      >
+        Save Address
+      </button>
+      <p v-if="formError" class="text-red-600 mt-2">{{ formError }}</p>
+    </div>
 
-      <div class="text-right">
-        <h2 class="text-xl font-bold mb-4">Total: ${{ total.toFixed(2) }}</h2>
-        <button
-          @click="submitOrder"
-          :disabled="orderLoading"
-          class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-md font-medium"
-        >
-          <span v-if="orderLoading">Placing Order...</span>
-          <span v-else>Confirm Order</span>
-        </button>
+    <!-- Payment Method -->
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold mb-4">Select Payment Method</h2>
+      <div class="flex space-x-6">
+        <label>
+          <input type="radio" value="Mastercard" v-model="paymentMethod" />
+          Mastercard
+        </label>
+        <label>
+          <input type="radio" value="Visa" v-model="paymentMethod" />
+          Visa
+        </label>
+        <label>
+          <input type="radio" value="PayPal" v-model="paymentMethod" />
+          PayPal
+        </label>
       </div>
+    </div>
 
-      <p v-if="orderError" class="text-red-500 mt-4">{{ orderError }}</p>
+    <!-- Confirm -->
+    <div class="mt-8 text-right">
+      <button
+        @click="submitOrder"
+        class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded font-medium"
+        :disabled="isSubmitting"
+      >
+        {{ isSubmitting ? "Placing Order..." : "Confirm Order" }}
+      </button>
+      <p v-if="orderError" class="text-red-500 mt-2">{{ orderError }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { computed, ref, onMounted } from 'vue';
-  import { useCart } from '@/lib/cart';
-  import { useRouter } from 'vue-router';
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import {
+  lookupCityByPostcode,
+  saveNewAddress as apiSaveNewAddress,
+} from "../lib/api";
 
-  const { safeCart, loading, loadCart } = useCart();
-  const router = useRouter();
+const router = useRouter();
 
-  const total = computed(() =>
-    safeCart.value.reduce((sum, item) => sum + Number(item.Price) * (item.Quantity || 1), 0)
-  );
+const user = JSON.parse(sessionStorage.getItem("electromart-user"));
+const userId = user?.id ?? null;
 
-  const addressId = ref(1);
-  const orderLoading = ref(false);
-  const orderError = ref(null);
+const savedAddresses = ref([]);
+const selectedAddressId = ref(null);
 
-  function getUserId() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user?.UserID ?? null;
+const newAddress = ref({
+  street: "",
+  postCode: "",
+  city: "",
+});
+const formError = ref("");
+const orderError = ref("");
+const isSubmitting = ref(false);
+const paymentMethod = ref("Mastercard");
+
+// Fetch saved addresses
+async function fetchAddresses() {
+  if (!userId) return;
+  try {
+    const res = await fetch(
+      `https://idatg2204backend-production.up.railway.app/api/addresses/${userId}`
+    );
+    if (res.ok) {
+      savedAddresses.value = await res.json();
+    }
+  } catch (err) {
+    console.error("Failed to fetch addresses:", err);
+  }
+}
+
+// Lookup city from postcode
+async function lookupCity() {
+  const postcode = newAddress.value.postCode;
+  if (!postcode || !/^\d{4}$/.test(postcode)) {
+    formError.value = "Postcode must be 4 digits";
+    newAddress.value.city = "";
+    return;
   }
 
-  async function submitOrder() {
-    const userId = getUserId();
-    if (!userId || !addressId.value) {
-      orderError.value = 'Missing user or address info';
-      return;
-    }
+  try {
+    const data = await lookupCityByPostcode(postcode);
+    newAddress.value.city = data.City || data.city || "";
+    formError.value = "";
+  } catch (err) {
+    console.error("Postcode lookup failed:", err);
+    newAddress.value.city = "";
+    formError.value = "Invalid postcode";
+  }
+}
 
-    orderLoading.value = true;
-    orderError.value = null;
-
-    try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          addressId: addressId.value,
-        }),
-      });
-
-      if (!res.ok) throw new Error('Order submission failed');
-
-      const data = await res.json();
-      router.push(`/thank-you?orderId=${data.orderId}`);
-    } catch (err) {
-      orderError.value = err.message || 'Unknown error';
-    } finally {
-      orderLoading.value = false;
-    }
+// Save new address
+async function saveNewAddress() {
+  const { street, postCode } = newAddress.value;
+  if (!street || !postCode ) {
+    formError.value = "Please fill in all address fields.";
+    return;
   }
 
-  onMounted(loadCart);
+  try {
+    await apiSaveNewAddress(userId, street, postCode);
+    formError.value = "";
+    await fetchAddresses();
+    newAddress.value = { street: "", postCode: "" };
+  } catch (err) {
+    console.error("Save address error:", err);
+    formError.value = "Failed to save address.";
+  }
+}
+
+// Submit order
+async function submitOrder() {
+  const addressId = selectedAddressId.value;
+  if (!addressId) {
+    orderError.value = "Please select an address.";
+    return;
+  }
+  if (!paymentMethod.value) {
+    orderError.value = "Please select a payment method.";
+    return;
+  }
+
+  try {
+    isSubmitting.value = true;
+    const res = await fetch(
+      "https://idatg2204backend-production.up.railway.app/api/orders",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, addressId }),
+      }
+    );
+
+    if (!res.ok) throw new Error("Order submission failed");
+    const data = await res.json();
+    router.push(`/thank-you?orderId=${data.orderId}`);
+  } catch (err) {
+    console.error(err);
+    orderError.value = err.message || "Failed to submit order.";
+  } finally {
+    isSubmitting.value = false;
+  }
+}
+
+onMounted(fetchAddresses);
 </script>

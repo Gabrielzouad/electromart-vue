@@ -86,6 +86,7 @@ export async function updateCartItem(cartItemId, quantity) {
   });
 }
 
+// Login and Signup API
 export async function loginUser(credentials) {
   return fetchFromAPI('/auth/login', {
     method: 'POST',
@@ -97,5 +98,17 @@ export async function signupUser(userData) {
   return fetchFromAPI('/auth/signup', {
     method: 'POST',
     body: JSON.stringify(userData),
+  });
+}
+
+// Address related APIs
+export async function lookupCityByPostcode(postcode) {
+  return fetchFromAPI(`/postcodes/${postcode}`);
+}
+
+export async function saveNewAddress(userId, street, postCode) {
+  return fetchFromAPI('/addresses', {
+    method: 'POST',
+    body: JSON.stringify({ userId, street, postCode }),
   });
 }
