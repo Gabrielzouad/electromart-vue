@@ -351,39 +351,64 @@
 </template>
 
 <script setup>
-  import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
-  // State
-  const order = ref(null);
+const route = useRoute();
+const order = ref(null);
 
-  // Methods
-  const loadOrder = () => {
-    try {
-      const savedOrder = localStorage.getItem('electromart-last-order');
-      if (savedOrder) {
-        order.value = JSON.parse(savedOrder);
-      }
-    } catch (error) {
-      console.error('Error loading order:', error);
-    }
-  };
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
-  const formatDate = (dateString) => {
-    if (!dateString) return '';
+const printOrder = () => {
+  window.print();
+};
 
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+onMounted(async () => {
+  const orderId = route.query.orderId;
+  if (!orderId) return;
 
-  const printOrder = () => {
-    window.print();
-  };
+  try {
+    const response = await fetch(`https://idatg2204backend-production.up.railway.app/api/orders/details/${orderId}`);
+    if (!response.ok) throw new Error('Failed to fetch order');
+    const data = await response.json();
 
-  // Lifecycle hooks
-  onMounted(() => {
-    loadOrder();
-  });
+    // Expected structure from backend
+    order.value = {
+      orderNumber: orderId,
+      date: data.OrderDate,
+      subtotal: data.Amount,
+      shipping: 0,
+      tax: 0,
+      total: data.Amount,
+      orderData: {
+        Status: data.Status
+      },
+      addressInfo: {
+        street: data.Street || 'N/A',
+        postCode: data.PostCode || 'N/A',
+      },
+      userInfo: {
+        name: `${data.FirstName ?? ''} ${data.LastName ?? ''}`.trim(),
+        email: data.Email || 'unknown@example.com',
+        username: data.Username || '',
+      },
+      paymentData: {
+        PaymentDate: data.PaymentDate,
+        Status: data.PaymentStatus,
+      },
+      paymentMethod: data.PaymentMethod || '',
+      items: data.Items || [] // [{ name, price, quantity, image }]
+    };
+  } catch (err) {
+    console.error('Error loading order:', err);
+  }
+});
 </script>
+
 
 <style>
   @media print {

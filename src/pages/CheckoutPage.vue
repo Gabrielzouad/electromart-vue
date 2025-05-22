@@ -8,21 +8,24 @@
       <div v-if="savedAddresses.length === 0" class="text-gray-500 mb-4">
         No saved addresses found.
       </div>
-      <div v-else class="space-y-2 mb-6">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <div
           v-for="address in savedAddresses"
           :key="address.AddressID"
-          class="flex items-center space-x-4"
+          @click="selectedAddressId = address.AddressID"
+          class="cursor-pointer border px-4 py-3 rounded-md shadow-sm transition-all"
+          :class="{ 'border-emerald-500 ring-2 ring-emerald-300': selectedAddressId === address.AddressID }"
         >
           <input
             type="radio"
             :value="address.AddressID"
             v-model="selectedAddressId"
-            class="form-radio text-emerald-600"
+            class="sr-only"
           />
-          <span>
-            {{ address.Street }}, {{ address.PostCode }} {{ address.City }}
-          </span>
+          <div class="font-medium">{{ address.Street }}</div>
+          <div class="text-sm text-gray-600">
+            {{ address.PostCode }}, {{ address.City }}
+          </div>
         </div>
       </div>
     </div>
@@ -35,20 +38,20 @@
           v-model="newAddress.street"
           type="text"
           placeholder="Street"
-          class="border px-4 py-2 rounded"
+          class="border px-4 py-2 rounded w-full"
         />
         <input
           v-model="newAddress.postCode"
           type="text"
           placeholder="Postcode"
-          class="border px-4 py-2 rounded"
+          class="border px-4 py-2 rounded w-full"
           @blur="lookupCity"
         />
         <input
           v-model="newAddress.city"
           type="text"
           placeholder="City (auto-filled)"
-          class="border px-4 py-2 rounded bg-gray-100"
+          class="border px-4 py-2 rounded bg-gray-100 w-full"
           readonly
         />
       </div>
@@ -64,19 +67,22 @@
     <!-- Payment Method -->
     <div class="mt-8">
       <h2 class="text-xl font-semibold mb-4">Select Payment Method</h2>
-      <div class="flex space-x-6">
-        <label>
-          <input type="radio" value="Mastercard" v-model="paymentMethod" />
-          Mastercard
-        </label>
-        <label>
-          <input type="radio" value="Visa" v-model="paymentMethod" />
-          Visa
-        </label>
-        <label>
-          <input type="radio" value="PayPal" v-model="paymentMethod" />
-          PayPal
-        </label>
+      <div class="flex flex-wrap gap-4">
+        <div
+          v-for="option in ['Mastercard', 'Visa', 'PayPal']"
+          :key="option"
+          @click="paymentMethod = option"
+          class="cursor-pointer border px-4 py-2 rounded-md text-center shadow-sm transition-all w-40"
+          :class="{ 'border-emerald-500 ring-2 ring-emerald-300': paymentMethod === option }"
+        >
+          <input
+            type="radio"
+            :value="option"
+            v-model="paymentMethod"
+            class="sr-only"
+          />
+          <span class="font-medium text-gray-800">{{ option }}</span>
+        </div>
       </div>
     </div>
 
@@ -174,7 +180,6 @@ async function saveNewAddress() {
   }
 }
 
-// Submit order
 async function submitOrder() {
   const addressId = selectedAddressId.value;
   if (!addressId) {
@@ -188,21 +193,25 @@ async function submitOrder() {
 
   try {
     isSubmitting.value = true;
-    const res = await fetch(
-      "https://idatg2204backend-production.up.railway.app/api/orders",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, addressId }),
-      }
-    );
+
+    const res = await fetch("https://idatg2204backend-production.up.railway.app/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        addressId,
+        paymentMethod: paymentMethod.value,
+      }),
+    });
 
     if (!res.ok) throw new Error("Order submission failed");
     const data = await res.json();
-    router.push(`/thank-you?orderId=${data.orderId}`);
+
+  
+    router.push(`/order-confirmation?orderId=${data.orderId}`);
   } catch (err) {
     console.error(err);
-    orderError.value = err.message || "Failed to submit order.";
+    orderError.value = "Failed to place order";
   } finally {
     isSubmitting.value = false;
   }
