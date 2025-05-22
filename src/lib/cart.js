@@ -1,22 +1,20 @@
 import { fetchCart, addToCart, removeFromCartItem } from './api';
 import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
 
 const cart = ref([]);
 const loading = ref(false);
-const router = useRouter();
 
 function getUserId() {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return user?.UserID ?? null;
+  const user = JSON.parse(sessionStorage.getItem('electromart-user'));
+  return user?.id ?? null;
 }
 
-async function loadCart() {
+async function loadCart(router) {
   const userId = getUserId();
   loading.value = true;
 
   if (!userId) {
-    router.push('/login?redirectTo=/cart');
+    if (router) router.push('/login?redirectTo=/cart');
     return;
   }
 
@@ -33,31 +31,31 @@ async function loadCart() {
 
 const safeCart = computed(() => (Array.isArray(cart.value) ? cart.value : []));
 
-async function addItem(product, quantity = 1) {
+async function addItem(product, quantity = 1, router) {
   const userId = getUserId();
   if (!userId) {
-    router.push('/login?redirectTo=/products');
+    if (router) router.push('/login?redirectTo=/products');
     return;
   }
 
   try {
     await addToCart(userId, product.ProductID, quantity);
-    await loadCart();
+    await loadCart(router);
   } catch (err) {
     console.error('Failed to add item:', err);
   }
 }
 
-async function removeItem(cartItemId) {
+async function removeItem(cartItemId, router) {
   const userId = getUserId();
   if (!userId) {
-    router.push('/login?redirectTo=/cart');
+    if (router) router.push('/login?redirectTo=/cart');
     return;
   }
 
   try {
     await removeFromCartItem(cartItemId);
-    await loadCart();
+    await loadCart(router);
   } catch (err) {
     console.error('Failed to remove item:', err);
   }

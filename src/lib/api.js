@@ -64,23 +64,23 @@ export async function getBrands() {
 }
 
 export async function fetchCart(userId) {
-  return fetchFromAPI(`/cart/${userId}`);
+  return fetchFromAPI(`/carts/${userId}`);
 }
 
 export async function addToCart(userId, productId, quantity = 1) {
-  return fetchFromAPI(`/cart`, {
+  return fetchFromAPI(`/carts`, {
     method: 'POST',
     body: JSON.stringify({ userId, productId, quantity }),
   });
 }
 
 export async function removeFromCartItem(cartItemId) {
-  return fetchFromAPI(`/cart/${cartItemId}`, {
+  return fetchFromAPI(`/carts/${cartItemId}`, {
     method: 'DELETE',
   });
 }
 export async function updateCartItem(cartItemId, quantity) {
-  return fetchFromAPI(`/cart/${cartItemId}`, {
+  return fetchFromAPI(`/carts/${cartItemId}`, {
     method: 'PUT',
     body: JSON.stringify({ quantity }),
   });

@@ -1,11 +1,15 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-16">
+    <section
+      class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-16"
+    >
       <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row items-center">
           <div class="md:w-1/2 mb-8 md:mb-0">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Welcome to ElectroMart</h1>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+              Welcome to ElectroMart
+            </h1>
             <p class="text-xl mb-6">
               Your one-stop destination for premium electronics and gadgets.
             </p>
@@ -34,10 +38,15 @@
         <h2 class="text-3xl font-bold text-center mb-8">Shop by Category</h2>
 
         <div v-if="loadingCategories" class="flex justify-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"
+          ></div>
         </div>
 
-        <div v-else class="grid mx-auto grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div
+          v-else
+          class="grid mx-auto grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+        >
           <router-link
             v-for="category in categories"
             :key="category.CategoryID"
@@ -56,14 +65,21 @@
         <h2 class="text-3xl font-bold text-center mb-8">Featured Products</h2>
 
         <div v-if="loadingProducts" class="flex justify-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"
+          ></div>
         </div>
 
         <div v-else-if="featuredProducts.length === 0" class="text-center py-8">
-          <p class="text-gray-500">No featured products available at the moment.</p>
+          <p class="text-gray-500">
+            No featured products available at the moment.
+          </p>
         </div>
 
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div
+          v-else
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           <div
             v-for="product in featuredProducts"
             :key="product.ProductID"
@@ -71,19 +87,26 @@
           >
             <router-link :to="`/product/${product.ProductID}`">
               <img
-                :src="product.ImageURL || `/placeholder.svg?height=200&width=300&query=${encodeURIComponent(product.Name)}`"
+                :src="
+                  product.ImageURL ||
+                  `/placeholder.svg?height=200&width=300&query=${encodeURIComponent(product.Name)}`
+                "
                 :alt="product.Name"
                 class="w-full h-48 object-cover"
               />
             </router-link>
             <div class="p-4">
               <router-link :to="`/product/${product.ProductID}`" class="block">
-                <h3 class="font-medium text-lg mb-2 text-gray-800 hover:text-emerald-600">
+                <h3
+                  class="font-medium text-lg mb-2 text-gray-800 hover:text-emerald-600"
+                >
                   {{ product.Name }}
                 </h3>
               </router-link>
               <div class="flex justify-between items-center">
-                <span class="font-bold text-lg">${{ formatPrice(product.Price) }}</span>
+                <span class="font-bold text-lg"
+                  >${{ formatPrice(product.Price) }}</span
+                >
                 <button
                   @click.prevent="handleAddToCart(product)"
                   class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-full"
@@ -112,9 +135,12 @@
         <div class="bg-gray-800 rounded-xl overflow-hidden">
           <div class="flex flex-col md:flex-row">
             <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Special Deals</h2>
+              <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Special Deals
+              </h2>
               <p class="text-gray-300 mb-6">
-                Get up to 40% off on selected smartphones and accessories. Limited time offer!
+                Get up to 40% off on selected smartphones and accessories.
+                Limited time offer!
               </p>
               <router-link
                 to="/products"
@@ -131,10 +157,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { getCategories, getProducts } from '@/lib/api';
-import { formatPrice } from '@/lib/utils';
-import { useCart } from '@/lib/cart';
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router"; // Import router
+import { getCategories, getProducts } from "@/lib/api";
+import { formatPrice } from "@/lib/utils";
+import { useCart } from "@/lib/cart";
 
 const categories = ref([]);
 const featuredProducts = ref([]);
@@ -142,40 +169,43 @@ const featuredProducts = ref([]);
 const loadingCategories = ref(true);
 const loadingProducts = ref(true);
 
+const router = useRouter(); //  Get router instance
 const { addItem, loadCart } = useCart();
 
-// Load data
+// Fetch categories from API
 const fetchCategories = async () => {
   try {
     loadingCategories.value = true;
     categories.value = await getCategories();
   } catch (e) {
-    console.error('Categories fetch failed:', e);
+    console.error("Categories fetch failed:", e);
   } finally {
     loadingCategories.value = false;
   }
 };
 
+// Fetch featured products from API
 const fetchFeaturedProducts = async () => {
   try {
     loadingProducts.value = true;
     featuredProducts.value = await getProducts({ limit: 8 });
   } catch (e) {
-    console.error('Products fetch failed:', e);
+    console.error("Products fetch failed:", e);
   } finally {
     loadingProducts.value = false;
   }
 };
 
+// Handle add to cart
 const handleAddToCart = (product) => {
-  addItem(product);
+  addItem(product, 1, router); // Pass router here
   alert(`${product.Name} added to cart!`);
 };
 
+// Lifecycle hook
 onMounted(() => {
   fetchCategories();
   fetchFeaturedProducts();
-  loadCart();
+  loadCart(router); // Pass router here too
 });
 </script>
-

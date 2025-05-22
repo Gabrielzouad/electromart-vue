@@ -14,7 +14,11 @@
     <div v-else-if="error" class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
       <div class="flex">
         <div class="flex-shrink-0">
-          <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg
+            class="h-5 w-5 text-red-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
             <path
               fill-rule="evenodd"
               d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -51,7 +55,9 @@
           <!-- Brand & Product Name -->
           <div class="mb-4">
             <div class="flex items-center mb-2">
-              <span class="text-sm text-emerald-600 font-medium">{{ brandName }}</span>
+              <span class="text-sm text-emerald-600 font-medium">{{
+                brandName
+              }}</span>
               <span
                 v-if="product.IsNew"
                 class="ml-2 px-2 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-medium rounded"
@@ -69,7 +75,11 @@
                 v-for="i in 5"
                 :key="i"
                 class="w-5 h-5"
-                :class="i <= (product.Rating || 4) ? 'text-yellow-400' : 'text-gray-300'"
+                :class="
+                  i <= (product.Rating || 4)
+                    ? 'text-yellow-400'
+                    : 'text-gray-300'
+                "
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -78,29 +88,42 @@
                 ></path>
               </svg>
             </div>
-            <span class="ml-2 text-sm text-gray-600">{{ product.ReviewCount || 42 }} reviews</span>
+            <span class="ml-2 text-sm text-gray-600"
+              >{{ product.ReviewCount || 42 }} reviews</span
+            >
           </div>
 
           <!-- Price -->
           <div class="mb-6">
             <div class="flex items-center">
-              <span class="text-3xl font-bold text-gray-900">${{ product.Price }}</span>
-              <span v-if="product.OldPrice" class="ml-3 text-lg text-gray-500 line-through">
+              <span class="text-3xl font-bold text-gray-900"
+                >${{ product.Price }}</span
+              >
+              <span
+                v-if="product.OldPrice"
+                class="ml-3 text-lg text-gray-500 line-through"
+              >
                 ${{ product.OldPrice }}
               </span>
               <span
                 v-if="product.OldPrice"
                 class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-sm font-medium rounded"
               >
-                {{ Math.round((1 - product.Price / product.OldPrice) * 100) }}% OFF
+                {{ Math.round((1 - product.Price / product.OldPrice) * 100) }}%
+                OFF
               </span>
             </div>
-            <p v-if="product.Price >= 50" class="text-sm text-emerald-600 mt-1">Free shipping</p>
+            <p v-if="product.Price >= 50" class="text-sm text-emerald-600 mt-1">
+              Free shipping
+            </p>
           </div>
 
           <!-- Stock Status -->
           <div class="mb-6">
-            <div v-if="product.Stock > 10" class="flex items-center text-emerald-600">
+            <div
+              v-if="product.Stock > 10"
+              class="flex items-center text-emerald-600"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5 mr-1"
@@ -117,7 +140,10 @@
               </svg>
               <span>In Stock</span>
             </div>
-            <div v-else-if="product.Stock > 0" class="flex items-center text-yellow-600">
+            <div
+              v-else-if="product.Stock > 0"
+              class="flex items-center text-yellow-600"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5 mr-1"
@@ -156,7 +182,10 @@
           <!-- Add to Cart Section -->
           <div class="border-t border-gray-200 pt-6">
             <div class="flex items-center mb-4">
-              <label for="quantity" class="block text-sm font-medium text-gray-700 mr-4">
+              <label
+                for="quantity"
+                class="block text-sm font-medium text-gray-700 mr-4"
+              >
                 Quantity
               </label>
               <div class="flex rounded-md">
@@ -164,7 +193,10 @@
                   @click="decrementQuantity"
                   class="px-3 py-1 border border-gray-300 rounded-l-md bg-gray-50 text-gray-500 hover:bg-gray-100"
                   :disabled="quantity <= 1 || product.Stock <= 0"
-                  :class="{ 'opacity-50 cursor-not-allowed': quantity <= 1 || product.Stock <= 0 }"
+                  :class="{
+                    'opacity-50 cursor-not-allowed':
+                      quantity <= 1 || product.Stock <= 0,
+                  }"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -253,14 +285,20 @@
           <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center mb-4">
               <div class="flex-1">
-                <h3 class="text-lg font-semibold text-gray-900">Customer Reviews</h3>
+                <h3 class="text-lg font-semibold text-gray-900">
+                  Customer Reviews
+                </h3>
                 <div class="flex items-center mt-1">
                   <div class="flex items-center">
                     <svg
                       v-for="i in 5"
                       :key="i"
                       class="w-5 h-5"
-                      :class="i <= (product.Rating || 4) ? 'text-yellow-400' : 'text-gray-300'"
+                      :class="
+                        i <= (product.Rating || 4)
+                          ? 'text-yellow-400'
+                          : 'text-gray-300'
+                      "
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -304,7 +342,10 @@
           @click="showCartModal = false"
         ></div>
 
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+        <span
+          class="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+        >
           &#8203;
         </span>
 
@@ -332,7 +373,10 @@
                 </svg>
               </div>
               <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                <h3
+                  class="text-lg leading-6 font-medium text-gray-900"
+                  id="modal-title"
+                >
                   Item Added to Cart
                 </h3>
                 <div class="mt-2">
@@ -366,49 +410,73 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
-  import { getProductById } from '@/lib/api';
-  import Breadcrumb from '@/components/Breadcrumb.vue';
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { getProductById } from "@/lib/api";
+import { useCart } from "@/lib/cart";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-  const route = useRoute();
+// Routing
+const route = useRoute();
+const router = useRouter();
 
-  // State
-  const loading = ref(true);
-  const error = ref(null);
-  const product = ref({});
-  const quantity = ref(1);
+// Cart functionality
+const { addItem } = useCart();
 
-  const fetchProduct = async () => {
-    try {
-      loading.value = true;
-      error.value = null;
+// State
+const loading = ref(true);
+const error = ref(null);
+const product = ref({});
+const quantity = ref(1);
+const showCartModal = ref(false);
 
-      const productId = route.params.id;
-      product.value = await getProductById(productId);
-    } catch (err) {
-      console.error(err);
-      error.value = 'Failed to load product. Please try again funker dette?.';
-    } finally {
-      loading.value = false;
-    }
-  };
+// Fetch product by ID
+const fetchProduct = async () => {
+  try {
+    loading.value = true;
+    error.value = null;
+    const productId = route.params.id;
+    product.value = await getProductById(productId);
+  } catch (err) {
+    console.error(err);
+    error.value = "Failed to load product. Please try again.";
+  } finally {
+    loading.value = false;
+  }
+};
 
-  // Methods
-  const incrementQuantity = () => {
-    if (quantity.value < product.value.Stock) {
-      quantity.value++;
-    }
-  };
+// Quantity handlers
+const incrementQuantity = () => {
+  if (quantity.value < product.value.Stock) {
+    quantity.value++;
+  }
+};
 
-  const decrementQuantity = () => {
-    if (quantity.value > 1) {
-      quantity.value--;
-    }
-  };
+const decrementQuantity = () => {
+  if (quantity.value > 1) {
+    quantity.value--;
+  }
+};
 
-  // Lifecycle hooks
-  onMounted(() => {
-    fetchProduct();
-  });
+// Add to cart
+const addToCart = async () => {
+  try {
+    await addItem(product.value, quantity.value, router);
+    showCartModal.value = true;
+  } catch (err) {
+    console.error("Failed to add product to cart:", err);
+    alert("Failed to add to cart. Please try again.");
+  }
+};
+
+// Navigate to cart
+const goToCart = () => {
+  showCartModal.value = false;
+  router.push("/cart");
+};
+
+// Init
+onMounted(() => {
+  fetchProduct();
+});
 </script>

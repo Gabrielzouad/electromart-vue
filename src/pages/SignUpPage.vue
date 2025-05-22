@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div
+    class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+  >
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <div class="flex justify-center">
         <router-link to="/" class="flex items-center">
@@ -20,10 +22,15 @@
           <span class="ml-2 text-2xl font-bold text-gray-900">ElectroMart</span>
         </router-link>
       </div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create a new account</h2>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Create a new account
+      </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
         Or
-        <router-link to="/login" class="font-medium text-emerald-600 hover:text-emerald-500">
+        <router-link
+          to="/login"
+          class="font-medium text-emerald-600 hover:text-emerald-500"
+        >
           sign in to your existing account
         </router-link>
       </p>
@@ -34,7 +41,11 @@
         <div v-if="signupSuccess" class="mb-4 rounded-md bg-emerald-50 p-4">
           <div class="flex">
             <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+              <svg
+                class="h-5 w-5 text-emerald-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
                 <path
                   fill-rule="evenodd"
                   d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -53,7 +64,11 @@
         <div v-if="signupError" class="mb-4 rounded-md bg-red-50 p-4">
           <div class="flex">
             <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <svg
+                class="h-5 w-5 text-red-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
                 <path
                   fill-rule="evenodd"
                   d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -72,7 +87,10 @@
         <form class="space-y-6" @submit.prevent="handleSignup">
           <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
             <div>
-              <label for="firstName" class="block text-sm font-medium text-gray-700">
+              <label
+                for="firstName"
+                class="block text-sm font-medium text-gray-700"
+              >
                 First name
               </label>
               <div class="mt-1">
@@ -92,7 +110,10 @@
             </div>
 
             <div>
-              <label for="lastName" class="block text-sm font-medium text-gray-700">
+              <label
+                for="lastName"
+                class="block text-sm font-medium text-gray-700"
+              >
                 Last name
               </label>
               <div class="mt-1">
@@ -106,12 +127,16 @@
                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
                 />
               </div>
-              <p v-if="errors.lastName" class="mt-1 text-sm text-red-600">{{ errors.lastName }}</p>
+              <p v-if="errors.lastName" class="mt-1 text-sm text-red-600">
+                {{ errors.lastName }}
+              </p>
             </div>
           </div>
 
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email address</label
+            >
             <div class="mt-1">
               <input
                 id="email"
@@ -123,11 +148,17 @@
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
               />
             </div>
-            <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
+            <p v-if="errors.email" class="mt-1 text-sm text-red-600">
+              {{ errors.email }}
+            </p>
           </div>
 
           <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+              >Username</label
+            >
             <div class="mt-1">
               <input
                 id="username"
@@ -139,11 +170,17 @@
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
               />
             </div>
-            <p v-if="errors.username" class="mt-1 text-sm text-red-600">{{ errors.username }}</p>
+            <p v-if="errors.username" class="mt-1 text-sm text-red-600">
+              {{ errors.username }}
+            </p>
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
             <div class="mt-1">
               <input
                 id="password"
@@ -155,11 +192,16 @@
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
               />
             </div>
-            <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
+            <p v-if="errors.password" class="mt-1 text-sm text-red-600">
+              {{ errors.password }}
+            </p>
           </div>
 
           <div>
-            <label for="confirmPassword" class="block text-sm font-medium text-gray-700">
+            <label
+              for="confirmPassword"
+              class="block text-sm font-medium text-gray-700"
+            >
               Confirm password
             </label>
             <div class="mt-1">
@@ -189,11 +231,17 @@
             />
             <label for="terms" class="ml-2 block text-sm text-gray-900">
               I agree to the
-              <a href="#" class="font-medium text-emerald-600 hover:text-emerald-500">
+              <a
+                href="#"
+                class="font-medium text-emerald-600 hover:text-emerald-500"
+              >
                 Terms and Conditions
               </a>
               and
-              <a href="#" class="font-medium text-emerald-600 hover:text-emerald-500">
+              <a
+                href="#"
+                class="font-medium text-emerald-600 hover:text-emerald-500"
+              >
                 Privacy Policy
               </a>
             </label>
@@ -229,7 +277,7 @@
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              {{ isLoading ? 'Creating account...' : 'Create account' }}
+              {{ isLoading ? "Creating account..." : "Create account" }}
             </button>
           </div>
         </form>
@@ -239,136 +287,132 @@
 </template>
 
 <script setup>
-  import { ref, reactive } from 'vue';
-  import { useRouter } from 'vue-router';
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 
-  const router = useRouter();
+const router = useRouter();
 
-  // Mock existing user for demo purposes
-  const mockExistingUser = {
-    username: 'newuser',
-    email: 'newuser@example.com',
-  };
+const formData = reactive({
+  firstName: "",
+  lastName: "",
+  email: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+  agreeToTerms: false,
+});
 
-  const formData = reactive({
-    firstName: '',
-    lastName: '',
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: '',
-    agreeToTerms: false,
+const errors = reactive({
+  firstName: "",
+  lastName: "",
+  email: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+  agreeToTerms: "",
+});
+
+const isLoading = ref(false);
+const signupError = ref("");
+const signupSuccess = ref(false);
+
+const validateForm = () => {
+  let isValid = true;
+
+  Object.keys(errors).forEach((key) => {
+    errors[key] = "";
   });
 
-  const errors = reactive({
-    firstName: '',
-    lastName: '',
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: '',
-    agreeToTerms: '',
-  });
+  if (!formData.firstName.trim()) {
+    errors.firstName = "First name is required";
+    isValid = false;
+  }
 
-  const isLoading = ref(false);
-  const signupError = ref('');
-  const signupSuccess = ref(false);
+  if (!formData.lastName.trim()) {
+    errors.lastName = "Last name is required";
+    isValid = false;
+  }
 
-  const validateForm = () => {
-    let isValid = true;
+  if (!formData.email.trim()) {
+    errors.email = "Email is required";
+    isValid = false;
+  } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    errors.email = "Please enter a valid email address";
+    isValid = false;
+  }
 
-    // Reset errors
-    Object.keys(errors).forEach((key) => {
-      errors[key] = '';
-    });
+  if (!formData.username.trim()) {
+    errors.username = "Username is required";
+    isValid = false;
+  } else if (formData.username.length < 3) {
+    errors.username = "Username must be at least 3 characters";
+    isValid = false;
+  }
 
-    // Validate first name
-    if (!formData.firstName.trim()) {
-      errors.firstName = 'First name is required';
-      isValid = false;
+  if (!formData.password) {
+    errors.password = "Password is required";
+    isValid = false;
+  } else if (formData.password.length < 3) {
+    errors.password = "Password must be at least 3 characters";
+    isValid = false;
+  }
+
+  if (formData.password !== formData.confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
+    isValid = false;
+  }
+
+  if (!formData.agreeToTerms) {
+    errors.agreeToTerms = "You must agree to the terms and conditions";
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+const handleSignup = async () => {
+  if (!validateForm()) {
+    return;
+  }
+
+  isLoading.value = true;
+  signupError.value = "";
+  signupSuccess.value = false;
+
+  try {
+    const res = await fetch(
+      "https://idatg2204backend-production.up.railway.app/api/auth/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          email: formData.email,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Signup failed");
     }
 
-    // Validate last name
-    if (!formData.lastName.trim()) {
-      errors.lastName = 'Last name is required';
-      isValid = false;
-    }
+    signupSuccess.value = true;
 
-    // Validate email
-    if (!formData.email.trim()) {
-      errors.email = 'Email is required';
-      isValid = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
-      isValid = false;
-    } else if (formData.email === mockExistingUser.email) {
-      errors.email = 'This email is already in use';
-      isValid = false;
-    }
-
-    // Validate username
-    if (!formData.username.trim()) {
-      errors.username = 'Username is required';
-      isValid = false;
-    } else if (formData.username.length < 3) {
-      errors.username = 'Username must be at least 3 characters';
-      isValid = false;
-    } else if (formData.username === mockExistingUser.username) {
-      errors.username = 'This username is already taken';
-      isValid = false;
-    }
-
-    // Validate password
-    if (!formData.password) {
-      errors.password = 'Password is required';
-      isValid = false;
-    } else if (formData.password.length < 3) {
-      errors.password = 'Password must be at least 3 characters';
-      isValid = false;
-    }
-
-    // Validate confirm password
-    if (formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
-      isValid = false;
-    }
-
-    // Validate terms agreement
-    if (!formData.agreeToTerms) {
-      errors.agreeToTerms = 'You must agree to the terms and conditions';
-      isValid = false;
-    }
-
-    return isValid;
-  };
-
-  const handleSignup = async () => {
-    if (!validateForm()) {
-      return;
-    }
-
-    isLoading.value = true;
-    signupError.value = '';
-
-    try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // In a real app, you would make an API call to your backend
-      // For demo purposes, we'll just simulate a successful signup
-
-      // Show success message
-      signupSuccess.value = true;
-
-      // Redirect to login page after a short delay
-      setTimeout(() => {
-        router.push('/login');
-      }, 2000);
-    } catch (error) {
-      console.error('Signup error:', error);
-      signupError.value = 'An error occurred during signup. Please try again.';
-    } finally {
-      isLoading.value = false;
-    }
-  };
+    setTimeout(() => {
+      router.push("/login");
+    }, 2000);
+  } catch (err) {
+    console.error("Signup error:", err.message);
+    signupError.value = err.message;
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>

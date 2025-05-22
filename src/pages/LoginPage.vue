@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div
+    class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8"
+  >
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <div class="flex justify-center">
         <router-link to="/" class="flex items-center">
@@ -25,7 +27,10 @@
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
         Or
-        <router-link to="/signup" class="font-medium text-emerald-600 hover:text-emerald-500">
+        <router-link
+          to="/signup"
+          class="font-medium text-emerald-600 hover:text-emerald-500"
+        >
           create a new account
         </router-link>
       </p>
@@ -36,7 +41,11 @@
         <div v-if="loginSuccess" class="mb-4 rounded-md bg-emerald-50 p-4">
           <div class="flex">
             <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+              <svg
+                class="h-5 w-5 text-emerald-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
                 <path
                   fill-rule="evenodd"
                   d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -45,7 +54,9 @@
               </svg>
             </div>
             <div class="ml-3">
-              <p class="text-sm font-medium text-emerald-800">Login successful! Redirecting...</p>
+              <p class="text-sm font-medium text-emerald-800">
+                Login successful! Redirecting...
+              </p>
             </div>
           </div>
         </div>
@@ -53,7 +64,11 @@
         <div v-if="loginError" class="mb-4 rounded-md bg-red-50 p-4">
           <div class="flex">
             <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <svg
+                class="h-5 w-5 text-red-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
                 <path
                   fill-rule="evenodd"
                   d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -71,7 +86,10 @@
 
         <form class="space-y-6" @submit.prevent="handleLogin">
           <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+            >
               Username or Email
             </label>
             <div class="mt-1">
@@ -88,7 +106,11 @@
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
             <div class="mt-1">
               <input
                 id="password"
@@ -111,11 +133,16 @@
                 v-model="formData.rememberMe"
                 class="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
               />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+              <label for="remember-me" class="ml-2 block text-sm text-gray-900"
+                >Remember me</label
+              >
             </div>
 
             <div class="text-sm">
-              <a href="#" class="font-medium text-emerald-600 hover:text-emerald-500">
+              <a
+                href="#"
+                class="font-medium text-emerald-600 hover:text-emerald-500"
+              >
                 Forgot your password?
               </a>
             </div>
@@ -148,7 +175,7 @@
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              {{ isLoading ? 'Signing in...' : 'Sign in' }}
+              {{ isLoading ? "Signing in..." : "Sign in" }}
             </button>
           </div>
         </form>
@@ -158,85 +185,73 @@
 </template>
 
 <script setup>
-  import { ref, reactive } from 'vue';
-  import { useRouter } from 'vue-router';
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 
-  const router = useRouter();
+const router = useRouter();
 
-  // Mock backend data for demo purposes
-  const mockUser = {
-    username: 'newuser',
-    password: '123',
-    email: 'newuser@example.com',
-    firstName: 'New',
-    lastName: 'User',
-  };
+const formData = reactive({
+  username: "",
+  password: "",
+  rememberMe: false,
+});
 
-  const formData = reactive({
-    username: '',
-    password: '',
-    rememberMe: false,
-  });
+const isLoading = ref(false);
+const loginError = ref("");
+const loginSuccess = ref(false);
 
-  const isLoading = ref(false);
-  const loginError = ref('');
-  const loginSuccess = ref(false);
+const handleLogin = async () => {
+  isLoading.value = true;
+  loginError.value = "";
+  loginSuccess.value = false;
 
-  const handleLogin = async () => {
-    isLoading.value = true;
-    loginError.value = '';
-
-    try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // In a real app, you would make an API call to your backend
-      // For demo purposes, we'll check against our mock data
-      const isValidUsername =
-        formData.username === mockUser.username || formData.username === mockUser.email;
-      const isValidPassword = formData.password === mockUser.password;
-
-      if (isValidUsername && isValidPassword) {
-        // Login successful
-        loginSuccess.value = true;
-
-        // Store user info in localStorage if remember me is checked
-        if (formData.rememberMe) {
-          localStorage.setItem(
-            'electromart-user',
-            JSON.stringify({
-              username: mockUser.username,
-              email: mockUser.email,
-              firstName: mockUser.firstName,
-              lastName: mockUser.lastName,
-            })
-          );
-        } else {
-          // Use sessionStorage if remember me is not checked
-          sessionStorage.setItem(
-            'electromart-user',
-            JSON.stringify({
-              username: mockUser.username,
-              email: mockUser.email,
-              firstName: mockUser.firstName,
-              lastName: mockUser.lastName,
-            })
-          );
-        }
-
-        // Redirect to home page after a short delay
-        setTimeout(() => {
-          router.push('/');
-        }, 1500);
-      } else {
-        // Login failed
-        loginError.value = 'Invalid username or password. Please try again.';
+  try {
+    const response = await fetch(
+      "https://idatg2204backend-production.up.railway.app/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      loginError.value = 'An error occurred during login. Please try again.';
-    } finally {
-      isLoading.value = false;
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Login failed");
     }
-  };
+
+    loginSuccess.value = true;
+
+    const user = data.user;
+
+    const userData = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+
+    if (formData.rememberMe) {
+      localStorage.setItem("electromart-user", JSON.stringify(userData));
+    } else {
+      sessionStorage.setItem("electromart-user", JSON.stringify(userData));
+    }
+
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
+  } catch (err) {
+    console.error("Login error:", err);
+    loginError.value = err.message || "An unknown error occurred";
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
