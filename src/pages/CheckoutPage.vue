@@ -158,7 +158,7 @@ async function lookupCity() {
 // Save new address
 async function saveNewAddress() {
   const { street, postCode } = newAddress.value;
-  if (!street || !postCode ) {
+  if (!street || !postCode) {
     formError.value = "Please fill in all address fields.";
     return;
   }
@@ -167,7 +167,7 @@ async function saveNewAddress() {
     await apiSaveNewAddress(userId, street, postCode);
     formError.value = "";
     await fetchAddresses();
-    newAddress.value = { street: "", postCode: "" };
+    newAddress.value = { street: "", postCode: "", city: "" };
   } catch (err) {
     console.error("Save address error:", err);
     formError.value = "Failed to save address.";
