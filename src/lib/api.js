@@ -85,3 +85,17 @@ export async function updateCartItem(cartItemId, quantity) {
     body: JSON.stringify({ quantity }),
   });
 }
+
+export async function loginUser(credentials) {
+  return fetchFromAPI('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+  });
+}
+
+export async function signupUser(userData) {
+  return fetchFromAPI('/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+  });
+}
