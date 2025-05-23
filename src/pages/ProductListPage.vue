@@ -49,13 +49,11 @@
       <section class="lg:col-span-4">
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-2xl font-bold">Products</h1>
-          <select v-model="selectedSort" @change="fetchProducts" class="border px-3 py-2 rounded-md">
-            <option value="">Sort by</option>
-            <option value="price_asc">Price: Low to High</option>
-            <option value="price_desc">Price: High to Low</option>
-            <option value="name_asc">Name: A to Z</option>
-            <option value="name_desc">Name: Z to A</option>
-          </select>
+            <select v-model="selectedSort" @change="fetchProducts" class="border px-3 py-2 rounded-md">
+              <option value="">Sort by</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+            </select>
         </div>
 
         <!-- Product Grid -->
