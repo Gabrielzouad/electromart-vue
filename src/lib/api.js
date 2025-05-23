@@ -29,7 +29,7 @@ export async function getProducts(params = {}) {
   if (Object.keys(params).length > 0) {
     const queryParams = new URLSearchParams();
 
-    // Use the names expected by the backend
+
     if (params.categoryId) queryParams.append('category', params.categoryId);
     if (params.brandId) queryParams.append('brand', params.brandId);
     if (params.sort) queryParams.append('sort', params.sort);

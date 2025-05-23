@@ -103,7 +103,6 @@
                     <span class="text-gray-600">Shipping</span>
                     <span>{{ order.shipping > 0 ? '$' + order.shipping.toFixed(2) : 'Free' }}</span>
                   </div>
-                  <!-- Tax removed -->
                   <div class="flex justify-between font-bold text-lg border-t border-gray-200 pt-2 mt-2">
                     <span>Total</span>
                     <span>${{ Number(order.total).toFixed(2) }}</span>
