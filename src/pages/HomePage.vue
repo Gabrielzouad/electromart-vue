@@ -90,27 +90,6 @@
       </div>
     </section>
 
-    <!-- Deals Section -->
-    <section class="py-12">
-      <div class="container mx-auto px-4">
-        <div class="bg-gray-800 rounded-xl overflow-hidden">
-          <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Special Deals</h2>
-              <p class="text-gray-300 mb-6">
-                Get up to 40% off on selected smartphones and accessories. Limited time offer!
-              </p>
-              <router-link
-                to="/products"
-                class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-md font-medium transition-colors self-start"
-              >
-                Shop Deals
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 

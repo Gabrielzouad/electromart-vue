@@ -13,6 +13,7 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage.vue';
 import ProductPage from './pages/ProductPage.vue';
 import LoginPage from './pages/LoginPage.vue';
 import SignupPage from './pages/SignUpPage.vue';
+import UserPage from './pages/UserPage.vue';
 
 // Create router
 const router = createRouter({
@@ -27,11 +28,22 @@ const router = createRouter({
     { path: '/order-confirmation', component: OrderConfirmationPage },
     { path: '/login', component: LoginPage },
     { path: '/signup', component: SignupPage },
+    { path: '/user', component: UserPage, meta: { requiresAuth: true } },
   ],
   scrollBehavior() {
     // Always scroll to top
     return { top: 0 };
   },
+});
+
+// Navigation guard
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(sessionStorage.getItem('electromart-user'));
+  if (to.meta.requiresAuth && !user) {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 // Create app

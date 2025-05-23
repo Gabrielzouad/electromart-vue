@@ -9,40 +9,11 @@
           </p>
         </div>
 
-        <div>
-          <h3 class="text-lg font-semibold mb-4">Shop</h3>
-          <ul class="space-y-2">
-            <li>
-              <router-link to="/products" class="text-gray-400 hover:text-white">
-                All Products
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/category/1" class="text-gray-400 hover:text-white">
-                Smartphones
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/category/2" class="text-gray-400 hover:text-white">
-                Laptops
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/category/3" class="text-gray-400 hover:text-white">
-                Audio
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/category/4" class="text-gray-400 hover:text-white">
-                Accessories
-              </router-link>
-            </li>
-          </ul>
-        </div>
+
         <div>
           <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
           <div class="flex space-x-4 mb-4">
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="https://www.facebook.com/" class="text-gray-400 hover:text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"
@@ -54,7 +25,7 @@
                 />
               </svg>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="https://x.com/" class="text-gray-400 hover:text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"
@@ -66,7 +37,7 @@
                 />
               </svg>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="https://www.instagram.com/" class="text-gray-400 hover:text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"

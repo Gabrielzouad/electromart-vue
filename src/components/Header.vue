@@ -71,6 +71,22 @@
                 {{ cartItemCount }}
               </span>
             </router-link>
+              <router-link to="/user" class="ml-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-gray-700 hover:text-emerald-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5.121 17.804A9 9 0 0112 15c2.133 0 4.098.747 5.879 1.996M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </router-link>
           </div>
         </div>
       </div>

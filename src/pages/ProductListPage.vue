@@ -35,8 +35,8 @@
             <li v-for="brand in brands" :key="brand.BrandID">
               <button
                 class="text-left w-full"
-                :class="{ 'text-emerald-600 font-semibold': selectedBrands.includes(brand.BrandID) }"
-                @click="toggleBrand(brand.BrandID)"
+                :class="{ 'text-emerald-600 font-semibold': selectedBrands.includes(String(brand.BrandID)) }"
+                @click="toggleBrand(String(brand.BrandID))"
               >
                 {{ brand.Name }}
               </button>
@@ -47,7 +47,6 @@
 
       <!-- Main Products Section -->
       <section class="lg:col-span-4">
-        <!-- Header with Sort -->
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-2xl font-bold">Products</h1>
           <select v-model="selectedSort" @change="fetchProducts" class="border px-3 py-2 rounded-md">
@@ -59,7 +58,7 @@
           </select>
         </div>
 
-        <!-- Products Grid -->
+        <!-- Product Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <router-link
             v-for="product in products"
@@ -88,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getProducts, getBrands, getCategories } from '@/lib/api';
 
@@ -120,9 +119,9 @@ const toggleBrand = (brandId) => {
 const fetchProducts = async () => {
   try {
     const params = {
-      categoryId: selectedCategory.value,
-      brandId: selectedBrands.value.join(','),
-      sort: selectedSort.value,
+      ...(selectedCategory.value && { categoryId: selectedCategory.value }),
+      ...(selectedBrands.value.length && { brandId: selectedBrands.value.join(',') }),
+      ...(selectedSort.value && { sort: selectedSort.value }),
     };
     products.value = await getProducts(params);
   } catch (err) {

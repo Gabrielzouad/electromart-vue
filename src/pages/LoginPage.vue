@@ -90,7 +90,7 @@
               for="username"
               class="block text-sm font-medium text-gray-700"
             >
-              Username or Email
+              Username
             </label>
             <div class="mt-1">
               <input

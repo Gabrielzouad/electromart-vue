@@ -23,27 +23,23 @@ async function fetchFromAPI(endpoint, options = {}) {
   }
 }
 
-// Products API
 export async function getProducts(params = {}) {
   let queryString = '';
 
   if (Object.keys(params).length > 0) {
     const queryParams = new URLSearchParams();
 
-    if (params.categoryId) queryParams.append('category_id', params.categoryId);
-    if (params.brandId) queryParams.append('brand_id', params.brandId);
-    if (params.search) queryParams.append('search', params.search);
-    if (params.minPrice) queryParams.append('min_price', params.minPrice);
-    if (params.maxPrice) queryParams.append('max_price', params.maxPrice);
+    // Use the names expected by the backend
+    if (params.categoryId) queryParams.append('category', params.categoryId);
+    if (params.brandId) queryParams.append('brand', params.brandId);
     if (params.sort) queryParams.append('sort', params.sort);
-    if (params.page) queryParams.append('page', params.page);
-    if (params.limit) queryParams.append('limit', params.limit);
 
     queryString = `?${queryParams.toString()}`;
   }
 
   return fetchFromAPI(`/products${queryString}`);
 }
+
 
 export async function getProductById(id) {
   return fetchFromAPI(`/products/${id}`);
@@ -111,4 +107,9 @@ export async function saveNewAddress(userId, street, postCode) {
     method: 'POST',
     body: JSON.stringify({ userId, street, postCode }),
   });
+}
+
+// User orders API
+export async function getOrders(userId) {
+  return fetchFromAPI(`/orders/${userId}`);
 }
